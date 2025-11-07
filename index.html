@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO</title>
     <style>
-        var tokenClient;
-        
-        var access_token;
-        var clientId = '145337605718-efhjjeqlrousk987od6nguchijma20uu.apps.googleusercontent.com';
-
-        var email = 'florian.feldhaus@gmail.com'
-        var bucket = 'private-bucket'
-        var object = 'private-object.json'
-
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -29,6 +20,7 @@
 
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    
     <script>
         const CLIENT_ID = '145337605718-efhjjeqlrousk987od6nguchijma20uu.apps.googleusercontent.com';
         const API_KEY = 'AIzaSyDDlKALwWGlhVvwaOOP7hVxUlp9xeAPg2k';
@@ -42,6 +34,7 @@
         function gapiLoaded() {
             gapi.load('client', initializeGapiClient);
         }
+        
         async function initializeGapiClient() {
             await gapi.client.init({
                 apiKey: API_KEY,
@@ -50,7 +43,6 @@
             gapiInited = true;
         }
 
-
         function gisLoaded() {
             tokenClient = google.accounts.oauth2.initTokenClient({
                 client_id: CLIENT_ID,
@@ -58,12 +50,10 @@
                 callback: '', // defined later
             });
             gisInited = true;
-        }        
+        }
     </script>   
     
     <script type="text/babel">
-        import * as React from 'react';
-
         function App() {
             function handleAuth() {
                 if (gapi.client.getToken() === null) {
@@ -92,16 +82,16 @@
             }
             
             React.useEffect(() => {
-                fetchTaskLists()
-            }, [])
+                handleAuth();
+            }, []);
             
             return (
                 <div>
                     <h1>Welcome to My TODO App</h1>
                     <p>This is a simple embedded React application.</p>
 
-                    <button onClick={() => { handleAuth() }}>Authorize</button>
-                    <button onClick={() => { fetchTaskLists() }}>fetchTaskLists</button>
+                    <button onClick={handleAuth}>Authorize</button>
+                    <button onClick={fetchTaskLists}>Fetch Task Lists</button>
                 </div>
             );
         }
