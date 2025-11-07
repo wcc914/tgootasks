@@ -60,18 +60,7 @@
             gisInited = true;
         }
 
-        function handleAuth() {
-            if (gapi.client.getToken() === null) {
-                tokenClient.requestAccessToken({prompt: 'consent'});
-            } else {
-                tokenClient.requestAccessToken({prompt: ''});
-            }
 
-            tokenClient.callback = async (resp) => {
-                if (resp.error !== undefined) throw (resp);
-                await fetchTaskLists();
-            };
-        }
 
         
     </script>   
@@ -80,6 +69,19 @@
         import * as React from 'react';
 
         function App() {
+            function handleAuth() {
+                if (gapi.client.getToken() === null) {
+                    tokenClient.requestAccessToken({prompt: 'consent'});
+                } else {
+                    tokenClient.requestAccessToken({prompt: ''});
+                }
+    
+                tokenClient.callback = async (resp) => {
+                    if (resp.error !== undefined) throw (resp);
+                    await fetchTaskLists();
+                };
+            }
+            
             async function fetchTaskLists() {
                 let response;
                 try {
@@ -101,7 +103,9 @@
                 <div>
                     <h1>Welcome to My TODO App</h1>
                     <p>This is a simple embedded React application.</p>
+
                     <button onClick={() => { handleAuth() }}>Authorize</button>
+                    <button onClick={() => { fetchTaskLists() }}>fetchTaskLists</button>
                 </div>
             );
         }
