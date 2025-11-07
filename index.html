@@ -92,9 +92,9 @@
                     <button onClick={handleAuth}>Authorize</button>
                     <button onClick={fetchTaskLists}>Fetch Task Lists</button>
 
-                    { taskLists.map(item => {
-                        return <>{item.title}</>
-                    })
+                    {
+                        taskLists.map(item => <>{item.title}</>)
+                    }
                 </div>
             );
         }
