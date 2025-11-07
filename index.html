@@ -30,17 +30,10 @@
             const [tokenClient, setTokenClient] = React.useState();
             const [taskLists, setTaskLists] = React.useState([]);
 
-            const gisLoaded = () => {
-                let tokenClient = google.accounts.oauth2.initTokenClient({
-                    client_id: CLIENT_ID,
-                    scope: SCOPES,
-                    callback: '', // defined later
-                });
-                setTokenClient(tokenClient);
-            };
-
             React.useEffect(async () => {
-                const initializeGapiClient = async () => {
+                const initializeGapiClient = 
+                
+                gapi.load('client', async () => {
                     await gapi.client.init({
                         apiKey: API_KEY,
                         discoveryDocs: [DISCOVERY_DOC],
@@ -52,29 +45,29 @@
                         callback: '', // defined later                       
                     });
                     setTokenClient(tokenClient);
-                };
+                });
+
+                let tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES,
+                    callback: '', // defined later
+                });
+                setTokenClient(tokenClient);
                 
-                gapi.load('client', initializeGapiClient);
-                gisLoaded()
             }, []);
 
-            // React.useEffect(() => {
-            //     handleAuth()
-            // }, [tokenClient]);
+            React.useEffect(() => {
+                handleAuth()
+            }, [tokenClient]);
             
             const handleAuth = () => {
-                if (!gapi || !tokenClient) return;
+                if (!tokenClient) return;
                 
                 if (gapi.client.getToken() === null) {
                     tokenClient.requestAccessToken({ prompt: 'consent' });
                 } else {
                     tokenClient.requestAccessToken({ prompt: '' });
                 }
-
-                tokenClient.callback = async (resp) => {
-                    if (resp.error !== undefined) throw (resp);
-                    await fetchTaskLists();
-                };
             };
 
             const fetchTaskLists = async () => {
