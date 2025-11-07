@@ -27,7 +27,7 @@
         const SCOPES = 'https://www.googleapis.com/auth/tasks.readonly';
 
         function App() {
-            const [tokenClient, setTokenClient] = React.useState();
+            const [authClient, setAuthClient] = React.useState();
             const [taskLists, setTaskLists] = React.useState([]);
 
             React.useEffect(async () => {                
@@ -37,12 +37,12 @@
                         discoveryDocs: [DISCOVERY_DOC],
                     });
                     
-                    let tokenClient = google.accounts.oauth2.initTokenClient({
+                    let authClient = google.accounts.oauth2.initTokenClient({
                         client_id: CLIENT_ID,
                         scope: SCOPES,
                         callback: '', // defined later                       
                     });
-                    setTokenClient(tokenClient);
+                    setAuthClient(authClient);
                 });
             }, []);
 
@@ -51,15 +51,15 @@
             }, [tokenClient]);
             
             const handleAuth = () => {
-                if (!tokenClient) return;
+                if (!authClient) return;
                 
                 if (gapi.client.getToken() === null) {
-                    tokenClient.requestAccessToken({ prompt: 'consent' });
+                    authClient.requestAccessToken({ prompt: 'consent' });
                 } else {
-                    tokenClient.requestAccessToken({ prompt: '' });
+                    authClient.requestAccessToken({ prompt: '' });
                 }
 
-                tokenClient.callback = fetchTaskLists
+                authClient.callback = fetchTaskLists
             };
 
             const fetchTaskLists = async () => {
