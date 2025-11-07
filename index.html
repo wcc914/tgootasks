@@ -59,6 +59,10 @@
                 gisLoaded()
             }, []);
 
+            React.useEffect(() => {
+                handleAuth()
+            }, [gapiInited, gisInited]);
+            
             const handleAuth = () => {
                 if (!gapi || !tokenClient) return;
                 
