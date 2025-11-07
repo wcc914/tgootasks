@@ -27,30 +27,26 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <script src="https://apis.google.com/js/api.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script>
-    function start() {
-        //Initialize the JavaScript client library.
-        gapi.client.init({
-            'apiKey': 'AIzaSyDDlKALwWGlhVvwaOOP7hVxUlp9xeAPg2k',
-            'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
-            'clientId': '145337605718-efhjjeqlrousk987od6nguchijma20uu.apps.googleusercontent.com',
-            'scope': 'profile',
-        }).then(function() {
-            // 3. Initialize and make the API request.
-            return gapi.client.people.people.get({
-                'resourceName': 'people/me',
-                'requestMask.includeField': 'person.names'
-            });
-        }).then(function(response) {
-            console.log(response.result);
-        }, function(reason) {
-            console.log('Error: ' + reason.result.error.message);
-        });
-};
+        const CLIENT_ID = '145337605718-efhjjeqlrousk987od6nguchijma20uu.apps.googleusercontent.com';
+        const API_KEY = 'AIzaSyDDlKALwWGlhVvwaOOP7hVxUlp9xeAPg2k';
+        const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest';
+        const SCOPES = 'https://www.googleapis.com/auth/tasks.readonly';
         
-gapi.load('client', start);
-</script>
+        function gapiLoaded() {
+            gapi.load('client', initializeGapiClient);
+        }
+        async function initializeGapiClient() {
+            await gapi.client.init({
+                apiKey: API_KEY,
+                discoveryDocs: [DISCOVERY_DOC],
+            });
+            gapiInited = true;
+            maybeEnableButtons();
+        }
+
+    </script>
     
     
     <script type="text/babel">
