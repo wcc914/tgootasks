@@ -27,25 +27,31 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <script src="https://accounts.google.com/gsi/client" onload="initTokenClient()" async defer></script>
+    <script src="https://apis.google.com/js/api.js"></script>
     <script>
-        function initTokenClient() {
-            tokenClient = google.accounts.oauth2.initTokenClient({
-                client_id: clientId,
-                scope: 'https://www.googleapis.com/auth/tasks.readonly',
-                prompt: '',
-                callback: (tokenResponse) => {
-                    access_token = tokenResponse.access_token;
-                },
+    function start() {
+        //Initialize the JavaScript client library.
+        gapi.client.init({
+            'apiKey': 'AIzaSyDDlKALwWGlhVvwaOOP7hVxUlp9xeAPg2k',
+            'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
+            'clientId': '145337605718-efhjjeqlrousk987od6nguchijma20uu.apps.googleusercontent.com',
+            'scope': 'profile',
+        }).then(function() {
+            // 3. Initialize and make the API request.
+            return gapi.client.people.people.get({
+                'resourceName': 'people/me',
+                'requestMask.includeField': 'person.names'
             });
-        }
-
-        function getToken() {
-            tokenClient.requestAccessToken({ 'hint': email });
-        }
-
-
-    </script>
+        }).then(function(response) {
+            console.log(response.result);
+        }, function(reason) {
+            console.log('Error: ' + reason.result.error.message);
+        });
+};
+        
+gapi.load('client', start);
+</script>
+    
     
     <script type="text/babel">
         // Simple React component
