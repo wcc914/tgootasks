@@ -61,14 +61,16 @@
             
             const handleAuth = () => {
                 if (!authClient) return;
-                
-                if (gapi.client.getToken() === null) {
-                    authClient.requestAccessToken({ prompt: 'consent' });
-                } else {
-                    authClient.requestAccessToken({ prompt: '' });
-                }
 
-                authClient.callback = fetchTaskLists
+                authClient.requestCode()
+                
+                // if (gapi.client.getToken() === null) {
+                //     authClient.requestAccessToken({ prompt: 'consent' });
+                // } else {
+                //     authClient.requestAccessToken({ prompt: '' });
+                // }
+
+                // authClient.callback = fetchTaskLists
             };
 
             const fetchTaskLists = async () => {
