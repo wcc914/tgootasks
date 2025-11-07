@@ -37,11 +37,20 @@
                         discoveryDocs: [DISCOVERY_DOC],
                     });
                     
-                    let authClient = google.accounts.oauth2.initTokenClient({
+                    // let authClient = google.accounts.oauth2.initTokenClient({
+                    //     client_id: CLIENT_ID,
+                    //     scope: SCOPES,
+                    //     callback: '', // defined later                       
+                    // });
+
+                    const authClient = google.accounts.oauth2.initCodeClient({
                         client_id: CLIENT_ID,
                         scope: SCOPES,
-                        callback: '', // defined later                       
+                        ux_mode: 'redirect',
+                        redirect_uri: 'https://wcc914.github.io/tgootasks/',
+                        // state: 'YOUR_BINDING_VALUE'
                     });
+                    
                     setAuthClient(authClient);
                 });
             }, []);
