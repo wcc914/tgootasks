@@ -30,9 +30,7 @@
             const [tokenClient, setTokenClient] = React.useState();
             const [taskLists, setTaskLists] = React.useState([]);
 
-            React.useEffect(async () => {
-                const initializeGapiClient = 
-                
+            React.useEffect(async () => {                
                 gapi.load('client', async () => {
                     await gapi.client.init({
                         apiKey: API_KEY,
@@ -60,6 +58,8 @@
                 } else {
                     tokenClient.requestAccessToken({ prompt: '' });
                 }
+
+                tokenClient.callback = fetchTaskLists
             };
 
             const fetchTaskLists = async () => {
@@ -78,7 +78,6 @@
                     <h1>Welcome to My TODO App</h1>
                     <p>This is a simple embedded React application.</p>
                     <button onClick={handleAuth}>Authorize</button>
-                    <button onClick={fetchTaskLists}>Fetch Task Lists</button>
 
                     {
                         taskLists.map(item => <>{item.title}</>)
