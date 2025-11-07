@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO</title>
     <style>
+        var tokenClient;
+        
+        var access_token;
+        var clientId = '145337605718-efhjjeqlrousk987od6nguchijma20uu.apps.googleusercontent.com';
+
+        var email = 'florian.feldhaus@gmail.com'
+        var bucket = 'private-bucket'
+        var object = 'private-object.json'
+
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -17,6 +26,26 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script src="https://accounts.google.com/gsi/client" onload="initTokenClient()" async defer></script>
+    <script>
+        function initTokenClient() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: clientId,
+                scope: 'https://www.googleapis.com/auth/tasks.readonly',
+                prompt: '',
+                callback: (tokenResponse) => {
+                    access_token = tokenResponse.access_token;
+                },
+            });
+        }
+
+        function getToken() {
+            tokenClient.requestAccessToken({ 'hint': email });
+        }
+
+
+    </script>
     
     <script type="text/babel">
         // Simple React component
