@@ -31,6 +31,7 @@
             const [gapiInited, setGapiInited] = React.useState(false);
             const [gisInited, setGisInited] = React.useState(false);
 
+            const [taskLists, setTaskLists] = React.useState();
             const gapiLoaded = () => {
                 const initializeGapiClient = async () => {
                     await gapi.client.init({
@@ -77,13 +78,11 @@
                 let response;
                 try {
                     response = await gapi.client.tasks.tasklists.list({ 'maxResults': 10 });
+                    setTaskLists(response.result.items)
                 } catch (err) {
                     document.getElementById('content').innerText = err.message;
                     return;
                 }
-
-                const taskLists = response.result.items;
-                console.log(taskLists);
             };
 
             return (
@@ -92,6 +91,10 @@
                     <p>This is a simple embedded React application.</p>
                     <button onClick={handleAuth}>Authorize</button>
                     <button onClick={fetchTaskLists}>Fetch Task Lists</button>
+
+                    { taskLists.map(item => {
+                        return <>{item.title}</>
+                    })
                 </div>
             );
         }
