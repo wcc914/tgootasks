@@ -61,25 +61,31 @@
         }
 
         function handleAuth() {
-            tokenClient.callback = async (resp) => {
-                if (resp.error !== undefined) {
-                    throw (resp);
-                }
-          
-                document.getElementById('signout_button').style.visibility = 'visible';
-                document.getElementById('authorize_button').innerText = 'Refresh';
-                await fetchTaskLists();
-            };
-
             if (gapi.client.getToken() === null) {
                 tokenClient.requestAccessToken({prompt: 'consent'});
             } else {
                 tokenClient.requestAccessToken({prompt: ''});
             }
-        }
-    </script>
 
-    
+            tokenClient.callback = async (resp) => {
+                if (resp.error !== undefined) throw (resp);
+                await fetchTaskLists();
+            };
+        }
+
+        async function fetchTaskLists() {
+            let response;
+            try {
+                response = await gapi.client.tasks.tasklists.list({ 'maxResults': 10 });
+            } catch (err) {
+                document.getElementById('content').innerText = err.message;
+                return;
+            }
+            
+            const taskLists = response.result.items;
+            console.log(taskLists)            
+        }
+    </script>   
     
     <script type="text/babel">
         // Simple React component
