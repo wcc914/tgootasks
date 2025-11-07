@@ -59,6 +59,8 @@
             }, []);
 
             const handleAuth = () => {
+                if (!gapi || !tokenClient) return;
+                
                 if (gapi.client.getToken() === null) {
                     tokenClient.requestAccessToken({ prompt: 'consent' });
                 } else {
