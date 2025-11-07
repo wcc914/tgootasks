@@ -73,26 +73,29 @@
             };
         }
 
-        async function fetchTaskLists() {
-            let response;
-            try {
-                response = await gapi.client.tasks.tasklists.list({ 'maxResults': 10 });
-            } catch (err) {
-                document.getElementById('content').innerText = err.message;
-                return;
-            }
-            
-            const taskLists = response.result.items;
-            console.log(taskLists)            
-        }
+        
     </script>   
     
     <script type="text/babel">
         import * as React from 'react';
 
         function App() {
-
+            async function fetchTaskLists() {
+                let response;
+                try {
+                    response = await gapi.client.tasks.tasklists.list({ 'maxResults': 10 });
+                } catch (err) {
+                    document.getElementById('content').innerText = err.message;
+                    return;
+                }
+                
+                const taskLists = response.result.items;
+                console.log(taskLists)            
+            }
             
+            React.useEffect(() => {
+                fetchTaskLists()
+            }, [])
             
             return (
                 <div>
