@@ -28,8 +28,10 @@
         const SCOPES = 'https://www.googleapis.com/auth/tasks.readonly';
 
         function App() {
-            let tokenClient;
+            let ;
+            const [tokenClient, setTokenClient] = React.useState();
 
+            
             const [gapiInited, setGapiInited] = React.useState(false);
             const [gisInited, setGisInited] = React.useState(false);
 
@@ -52,6 +54,7 @@
                     callback: '', // defined later
                 });
                 setGisInited(true);
+                setTokenClient(tokenClient);
             };
 
             React.useEffect(() => {
