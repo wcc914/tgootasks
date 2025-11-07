@@ -57,8 +57,25 @@
                 scope: SCOPES,
                 callback: '', // defined later
             });
-            
             gisInited = true;
+        }
+
+        function handleAuth() {
+            tokenClient.callback = async (resp) => {
+                if (resp.error !== undefined) {
+                    throw (resp);
+                }
+          
+                document.getElementById('signout_button').style.visibility = 'visible';
+                document.getElementById('authorize_button').innerText = 'Refresh';
+                await fetchTaskLists();
+            };
+
+            if (gapi.client.getToken() === null) {
+                tokenClient.requestAccessToken({prompt: 'consent'});
+            } else {
+                tokenClient.requestAccessToken({prompt: ''});
+            }
         }
     </script>
 
@@ -71,6 +88,7 @@
                 <div>
                     <h1>Welcome to My TODO App</h1>
                     <p>This is a simple embedded React application.</p>
+                    <button onclick="handleAuthClick()">Authorize</button>
                 </div>
             );
         }
