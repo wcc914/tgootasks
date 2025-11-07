@@ -48,7 +48,7 @@
 
             React.useEffect(() => {
                 handleAuth()
-            }, [tokenClient]);
+            }, [authClient]);
             
             const handleAuth = () => {
                 if (!authClient) return;
@@ -79,7 +79,7 @@
                     <p>This is a simple embedded React application.</p>
 
                     {
-                        taskLists.map(item => <>{item.title}</>)
+                        taskLists.map(item => <ul>{item.title}</ul>)
                     }
                 </div>
             );
