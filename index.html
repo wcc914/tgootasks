@@ -31,7 +31,7 @@
             const [gapiInited, setGapiInited] = React.useState(false);
             const [gisInited, setGisInited] = React.useState(false);
 
-            const [taskLists, setTaskLists] = React.useState();
+            const [taskLists, setTaskLists] = React.useState([]);
             const gapiLoaded = () => {
                 const initializeGapiClient = async () => {
                     await gapi.client.init({
